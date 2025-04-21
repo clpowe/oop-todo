@@ -61,3 +61,14 @@ func TestMarkIncomplete(t *testing.T) {
 		t.Error("Expected UpdateAt to be updated after TestMarkIncomplete")
 	}
 }
+
+func TestIsCompleted(t *testing.T) {
+	todo := NewTodo("123", "Buy milk")
+	if todo.IsCompleted() {
+		t.Error("Expected IsCompleted to return false for a new Todo")
+	}
+	todo.MarkComplete()
+	if !todo.IsCompleted() {
+		t.Error("Expected IsCompleted true after MarkComplete")
+	}
+}
