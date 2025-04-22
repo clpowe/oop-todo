@@ -11,10 +11,11 @@ import (
 
 type TodoService interface {
 	Create(title string) (*model.Todo, error)
-	List() ([]*model.Todo, error)
+	List() (map[string]*model.Todo, error)
 	Complete(id string) error
 	Incomplete(id string) error
 	Delete(id string) error
+	Get(id string) (*model.Todo, error)
 }
 
 type DefaultTodoService struct {
@@ -39,6 +40,10 @@ func (s *DefaultTodoService) Create(title string) (*model.Todo, error) {
 
 func (s *DefaultTodoService) List() (map[string]*model.Todo, error) {
 	return s.repo.GetAll()
+}
+
+func (s *DefaultTodoService) Get(id string) (*model.Todo, error) {
+	return s.repo.GetByID(id)
 }
 
 func (s *DefaultTodoService) Complete(id string) error {
