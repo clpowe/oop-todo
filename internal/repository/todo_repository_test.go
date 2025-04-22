@@ -3,7 +3,7 @@ package repository
 import (
 	"testing"
 
-	"www.github.com/clpowe/oop-todo/internal/model"
+	"github.com/clpowe/oop-todo/internal/model"
 )
 
 func TestInMemoryTodoRepository_Add_GetAll(t *testing.T) {
@@ -60,8 +60,8 @@ func TestInMemory_Update(t *testing.T) {
 	}
 
 	all, _ := repo.GetAll()
-	if len(all) != 1 || all[0].Title != "New Title" {
-		t.Errorf("Expected updated title \"New Title\", got %q", all[0].Title)
+	if len(all) != 1 || all["u1"].Title != "New Title" {
+		t.Errorf("Expected updated title \"New Title\", got %q", all["u1"].Title)
 	}
 }
 

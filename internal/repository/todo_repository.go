@@ -4,12 +4,12 @@ import (
 	"errors"
 	"sync"
 
-	"www.github.com/clpowe/oop-todo/internal/model"
+	"github.com/clpowe/oop-todo/internal/model"
 )
 
 type TodoRepository interface {
 	Add(todo *model.Todo) error
-	GetAll() ([]*model.Todo, error)
+	GetAll() (map[string]*model.Todo, error)
 	Update(todo *model.Todo) error
 	Delete(id string) error
 }
@@ -35,12 +35,12 @@ func (r *InMemoryTodoRepository) Add(todo *model.Todo) error {
 	return nil
 }
 
-func (r *InMemoryTodoRepository) GetAll() ([]*model.Todo, error) {
+func (r *InMemoryTodoRepository) GetAll() (map[string]*model.Todo, error) {
 	r.mu.RLock()
 	defer r.mu.RUnlock()
-	list := make([]*model.Todo, 0, len(r.todos))
-	for _, todo := range r.todos {
-		list = append(list, todo)
+	list := r.todos
+	if len(list) == 0 {
+		return nil, errors.New("no todos found")
 	}
 	return list, nil
 }
