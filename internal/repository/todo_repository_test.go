@@ -98,3 +98,31 @@ func TestInMemoryTodoRepository_Delete_NotFound(t *testing.T) {
 		t.Error("Expected error deleting non-existent todo, got none")
 	}
 }
+
+// Tests for GetByID functionality
+func TestInMemoryTodoRepository_GetByID_Success(t *testing.T) {
+	repo := NewInMemoryRepo()
+	todo := model.NewTodo("g1", "Get By ID Task")
+	if err := repo.Add(todo); err != nil {
+		t.Fatalf("unexpected error adding todo: %v", err)
+	}
+
+	found, err := repo.GetByID("g1")
+	if err != nil {
+		t.Fatalf("unexpected error getting todo by ID: %v", err)
+	}
+	if found.ID != "g1" {
+		t.Errorf("expected ID 'g1', got '%s'", found.ID)
+	}
+	if found.Title != "Get By ID Task" {
+		t.Errorf("expected Title 'Get By ID Task', got '%s'", found.Title)
+	}
+}
+
+func TestInMemoryTodoRepository_GetByID_NotFound(t *testing.T) {
+	repo := NewInMemoryRepo()
+	_, err := repo.GetByID("missing")
+	if err == nil {
+		t.Error("expected error when getting non-existent todo by ID, got none")
+	}
+}
