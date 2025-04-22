@@ -1,0 +1,42 @@
+{{ define "todos.html" }}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Todo List</title>
+  <link rel="stylesheet" href="/static/main.css">
+</head>
+
+<body>
+  <div class="l-container">
+    <h1 class="c-todoTitle u-mb-default">Todo List</h1>
+
+    <form class="c-todoForm u-mb-default u-inline-flex u-gap-default" hx-post="/todos" hx-target="#todo-list"
+      hx-swap="innerHTML">
+      <input type="text" name="title" class="c-todoForm__input u-flex-grow" placeholder="New todo" required />
+      <button type="submit" class="c-todoForm__button">Add</button>
+    </form>
+
+    <ul class="c-todoList" id="todo-list">
+      {{ range .Todos }}
+      <li class="c-todoList__item u-flex u-align-center u-gap-default {{ if .Done }}is-completed{{ end }}"
+        hx-get="/todos/{{ .ID }}" hx-target="#todo-detail" hx-swap="innerHTML">
+        <input type="checkbox" class="c-todoList__checkbox" {{ if .Done }}checked{{ end }}
+          hx-post="/todos/{{ .ID }}/{{ if .Done }}incomplete{{ else }}complete{{ end }}" hx-target="this"
+          hx-swap="outerHTML" />
+        <span class="c-todoList__label u-flex-grow">{{ .Title }}</span>
+        <button class="c-todoList__delete" hx-delete="/todos/{{ .ID }}" hx-target="#todo-list" hx-swap="innerHTML">
+          Delete
+        </button>
+      </li>
+      {{ end }}
+    </ul>
+
+    <div id="todo-detail"></div>
+  </div>
+</body>
+
+</html>
+{{ end }}

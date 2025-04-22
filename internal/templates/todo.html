@@ -1,0 +1,17 @@
+{{ define "todo.html" }}
+<div class="c-todoDetails u-padding-default u-bg-light u-rounded u-shadow" id="{{ .Todo.ID }}">
+  <h2 class="c-todoDetail__title u-mb-detail">{{.Todo.Title}}</h2>
+  <p class="c-todoDetails__status u-mb-default">Status: {{ if .Todo.Done}} Done {{else}} Pending {{end}}</p>
+  <div class="u-inline-flex u-gap-default">
+    <button class="c-todoDetail__button"
+      hx-post="/todos/{{ .Todo.ID }}/{{ if .Todo.Done }}incomplete{{ else }}complete{{ end }}"
+      hx-target="#{{ .Todo.ID }}" hx-swap="innerHTML">
+      {{ if .Todo.Done }}Mark Incomplete {{ else }} Mark Complete{{ end }}
+    </button>
+    <button class="c-todoDetail__delete" hx-delete="/todos/{{ .Todo.ID }}" hx-target="#{{ .Todo.ID }}"
+      hx-swap="innerHTML">
+      Delete
+    </button>
+  </div>
+</div>
+{{ end }}
